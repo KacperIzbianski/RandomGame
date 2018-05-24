@@ -52,16 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                      number = getRandomNumber();
                    playerNum = getNumberFromEditText();
-                   // if(editNumber.getText().toString().length() != 0){
-                    //    viewNumber.setText(String.valueOf(number));
-                     //   couter--;
-                     //   clickButton.setText(String.valueOf(couter));
 
-                     //   if(couter == 0){
-                     //       editNumber.setText("");
-                     //       shiftPlayer(currentPlayer);
-                    //    }
-                    //}
 
                     if(playerNum !=0) {
                         gameLogic();
@@ -74,49 +65,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public int getRandomNumber(){
-        Random random = new Random();
-        return random.nextInt(10);
-
-    }
-
-    public int shiftPlayer(int player){
-        switch (player) {
-            case 1:
-                currentPlayer = 2;
-                One.setVisibility(View.INVISIBLE);
-                Two.setVisibility(View.VISIBLE);
-                couter = 5;
-                click++;
-                break;
-
-            case 2 :
-                currentPlayer = 1;
-                One.setVisibility(View.VISIBLE);
-                Two.setVisibility(View.INVISIBLE);
-                couter = 5;
-                click++;
-                break;
-        }
-
-
-        return currentPlayer;
-    }
- public void gameLogic(){
+    public void gameLogic(){
         try{
 
-          viewNumber.setText(String.valueOf(number));
-          clickButton.setText(String.valueOf(globalCounter));
-          couter--;
+            viewNumber.setText(String.valueOf(number));
+            clickButton.setText(String.valueOf(globalCounter));
+            couter--;
 
             if(click == 2){
                 globalRound();
             }
-          if(couter == 0){
-              checkCaunter();
-              editNumber.setText("");
-              shiftPlayer(currentPlayer);
-           }
+            if(couter == 0){
+
+                editNumber.setText("");
+                shiftPlayer(currentPlayer);
+            }
 
 
 
@@ -131,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
                         globalcouter1++;
                         scoreOne.setText(String.valueOf(globalcouter1));
+
                         break;
 
                     case 2:
@@ -142,10 +106,44 @@ public class MainActivity extends AppCompatActivity {
         }catch(NumberFormatException e){
             Toast.makeText(getBaseContext(), "Podaj Liczbe", Toast.LENGTH_SHORT).show();//comunikat wyswitlany jesli w try stanie sie cos złego wtedy zrobi sie to co jest okreslone w catch
 
-     }
+        }
 
 
- }
+    }
+
+    public int shiftPlayer(int player){
+        switch (player) {
+            case 1:
+                currentPlayer = 2;
+                One.setVisibility(View.INVISIBLE);
+                Two.setVisibility(View.VISIBLE);
+                couter = 5;
+                click++;
+                if(click == 2){
+                   globalRound();
+                }
+                break;
+
+            case 2 :
+                currentPlayer = 1;
+                One.setVisibility(View.VISIBLE);
+                Two.setVisibility(View.INVISIBLE);
+                couter = 5;
+                click++;
+                if(click == 2){
+                    globalRound();
+                }
+                break;
+        }
+
+
+        return currentPlayer;
+    }
+    public int getRandomNumber(){
+        Random random = new Random();
+        return random.nextInt(10);
+
+    }
 public int getNumberFromEditText(){
         try{
             return  Integer.parseInt(editNumber.getText().toString());
@@ -156,9 +154,11 @@ public int getNumberFromEditText(){
     }return 0;
 }
 public void globalRound(){
-        if(globalCounter>0){
+        if(globalCounter>=1){
             globalCounter--;
             click = 0;
+        }else{
+            getGameOverActivity();
         }
 
 }
