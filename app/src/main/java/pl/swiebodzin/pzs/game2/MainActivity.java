@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     int globalcouter1 = 0;
     int globalcouter2 = 0;
-
+    int playerNum = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     if(couter == 0){
                         shiftPlayer(currentPlayer);
                     }
+
 
                     gameLogic();
 
@@ -89,30 +90,34 @@ public class MainActivity extends AppCompatActivity {
         return currentPlayer;
     }
  public void gameLogic(){
-         int playerNum = 0;
-         int number = Integer.parseInt(viewNumber.getText().toString());
-            //sprawdzenie czy zostala wpisana liczba w pole a jak nie to wyskakuje komunikat
-             playerNum = Integer.parseInt(editNumber.getText().toString());
+        try{
+            int number = Integer.parseInt(viewNumber.getText().toString()); //sprawdzenie czy zostala wpisana liczba w pole a jak nie to wyskakuje komunikat
+            playerNum = Integer.parseInt(editNumber.getText().toString());
+
             // number = 0;
 
 
 
 
-     if(number == playerNum && playerNum != 0) {
-         switch (currentPlayer) {
-             case 1:
-                 globalcouter1++;
-                 scoreOne.setText(String.valueOf(globalcouter1));
-                 break;
+            if(number == playerNum && playerNum != 0) {
 
-             case 2:
-                 globalcouter2++;
-                 scoreTwo.setText(String.valueOf(globalcouter2));
-                 break;
-         }
-     }else{
-         Toast.makeText(getApplicationContext(),"Podaj Liczbe",Toast.LENGTH_SHORT);
+                switch (currentPlayer) {
+                    case 1:
+                        globalcouter1++;
+                        scoreOne.setText(String.valueOf(globalcouter1));
+                        break;
+
+                    case 2:
+                        globalcouter2++;
+                        scoreTwo.setText(String.valueOf(globalcouter2));
+                        break;
+                }
+            }
+        }catch(NumberFormatException e){
+            Toast.makeText(getBaseContext(), "Podaj Liczbe", Toast.LENGTH_SHORT).show();//comunikat wyswitlany jesli w try stanie sie cos złego wtedy zrobi sie to co jest okreslone w catch
+
      }
+
 
  }
 
