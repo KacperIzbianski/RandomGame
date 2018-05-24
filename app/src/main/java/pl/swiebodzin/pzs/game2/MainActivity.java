@@ -1,7 +1,9 @@
 package pl.swiebodzin.pzs.game2;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     int globalcouter1 = 0;
     int globalcouter2 = 0;
     int playerNum = 0;
+    int globalCounter = 2;
+    int number;
+   int click = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +50,23 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
-                    int number = getRandomNumber();
-                    viewNumber.setText(String.valueOf(number));
-                    couter--;
-                    clickButton.setText(String.valueOf(couter));
+                     number = getRandomNumber();
+                   playerNum = getNumberFromEditText();
+                   // if(editNumber.getText().toString().length() != 0){
+                    //    viewNumber.setText(String.valueOf(number));
+                     //   couter--;
+                     //   clickButton.setText(String.valueOf(couter));
 
-                    if(couter == 0){
-                        shiftPlayer(currentPlayer);
+                     //   if(couter == 0){
+                     //       editNumber.setText("");
+                     //       shiftPlayer(currentPlayer);
+                    //    }
+                    //}
+
+                    if(playerNum !=0) {
+                        gameLogic();
                     }
 
-
-                    gameLogic();
 
 
                 }
@@ -76,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 One.setVisibility(View.INVISIBLE);
                 Two.setVisibility(View.VISIBLE);
                 couter = 5;
+                click++;
                 break;
 
             case 2 :
@@ -83,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 One.setVisibility(View.VISIBLE);
                 Two.setVisibility(View.INVISIBLE);
                 couter = 5;
+                click++;
                 break;
         }
 
@@ -91,13 +104,26 @@ public class MainActivity extends AppCompatActivity {
     }
  public void gameLogic(){
         try{
+
+          viewNumber.setText(String.valueOf(number));
+          clickButton.setText(String.valueOf(globalCounter));
+          couter--;
+
+            if(click == 2){
+                globalRound();
+            }
+          if(couter == 0){
+              checkCaunter();
+              editNumber.setText("");
+              shiftPlayer(currentPlayer);
+           }
+
+
+
+
+
             int number = Integer.parseInt(viewNumber.getText().toString()); //sprawdzenie czy zostala wpisana liczba w pole a jak nie to wyskakuje komunikat
             playerNum = Integer.parseInt(editNumber.getText().toString());
-
-            // number = 0;
-
-
-
 
             if(number == playerNum && playerNum != 0) {
 
@@ -120,5 +146,31 @@ public class MainActivity extends AppCompatActivity {
 
 
  }
+public int getNumberFromEditText(){
+        try{
+            return  Integer.parseInt(editNumber.getText().toString());
+
+        }catch(NumberFormatException e){
+            Log.d("error","number not found");
+
+    }return 0;
+}
+public void globalRound(){
+        if(globalCounter>0){
+            globalCounter--;
+            click = 0;
+        }
+
+}
+public void getGameOverActivity(){ //przenosi nas do innej klasy java
+        Intent intent = new Intent(this, GameOverActivity.class);
+        startActivity(intent);
+}
+
+public void checkCaunter(){
+    if(globalCounter == 0){
+        getGameOverActivity();
+    }
+}
 
 }
